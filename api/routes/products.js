@@ -5,10 +5,22 @@ const mongoose = require('mongoose')
 
 router.get('/', (req, res, next) => {
     Product.find()
+        .select('name price _id')
         .exec()
         .then(docs => {
-            console.log(docs)
-            res.status(200).json(docs)
+            const response = {
+                count: docs.length,
+                products: docs.map(doc => {
+                    return {
+                        ...docs,
+                        request: {
+                            type: 'GET',
+                            url: 'http://localhost:3000/products/' + doc._id
+                        }
+                    }
+                })
+            }
+            res.status(200).json(response)
         })
         .catch(err => {
             console.log(err)
@@ -25,10 +37,15 @@ router.post('/', (req, res, next) => {
         price: req.body.price
     })
     product.save().then(result => {
-        console.log(result)
         res.status(201).json({
-            message: 'Handling POST request to /products',
-            createdProduct: result
+            message: 'Created product',
+            createdProduct: {
+                ...result,
+                request: {
+                    type: 'GET',
+                    url: 'http://localhost:3000/products/' + result._id
+                }
+            }
         })
     }).catch(err => {
         console.log(err)
