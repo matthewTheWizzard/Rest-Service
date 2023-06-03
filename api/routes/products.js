@@ -8,11 +8,14 @@ router.get('/', (req, res, next) => {
         .select('name price _id')
         .exec()
         .then(docs => {
+            console.log(docs)
             const response = {
                 count: docs.length,
                 products: docs.map(doc => {
                     return {
-                        ...docs,
+                        _id: doc.id,
+                        name: doc.name,
+                        price: doc.price,
                         request: {
                             type: 'GET',
                             url: 'http://localhost:3000/products/' + doc._id
