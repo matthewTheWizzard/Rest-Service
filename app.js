@@ -4,8 +4,8 @@ const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 
-const productsRoutes = require('./api/routes/products')
-const ordersRoutes = require('./api/routes/orders')
+const deviceRoutes = require('./api/routes/device')
+const gatewaysRoutes = require('./api/routes/gateways')
 
 mongoose.connect('mongodb+srv://admin:admin@nodejs-rest.a03r9d4.mongodb.net/?retryWrites=true&w=majority');
 
@@ -24,8 +24,8 @@ app.use((req, res, next) => {
     next();
 })
 
-app.use('/products', productsRoutes);
-app.use('/orders', ordersRoutes);
+app.use('/device', deviceRoutes);
+app.use('/gateways', gatewaysRoutes);
 
 app.use((req, res, next) => {
     const error = new Error('Not Found')
@@ -33,7 +33,7 @@ app.use((req, res, next) => {
     next(error);
 })
 
-app.use((error, req, res, next) => {
+app.use((error, req, res) => {
     res.status(error.status || 500)
     res.json({
         error: {
