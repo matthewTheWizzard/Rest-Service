@@ -1,5 +1,6 @@
 import {useState} from "react";
 import styles from './GatewayForm.module.css'
+import { Validate } from "../../utils/validate.js";
 
 const GatewayForm = ({ onAddGateway }) => {
     const [newGateway, setNewGateway] = useState({
@@ -8,14 +9,35 @@ const GatewayForm = ({ onAddGateway }) => {
         ipv4: '',
     });
 
+    const [errors, setErrors] = useState({
+        serialNumber: null,
+        name: null,
+        ipv4: null,
+    })
+
     const handleInputChange = e => {
         setNewGateway({ ...newGateway, [e.target.name]: e.target.value });
     };
 
     const handleAddGateway = e => {
         e.preventDefault();
-        onAddGateway(newGateway);
-        setNewGateway({ serialNumber: '', name: '', ipv4: '' });
+
+        const validate = new Validate(newGateway)
+        validate.ifEmpty(newGateway)
+        validate.checkIp(newGateway.ipv4)
+
+        const hasErrors = validate.hasErrors();
+        if (hasErrors) {
+            setErrors(validate.errors)
+        } else {
+            onAddGateway(newGateway);
+            setErrors({
+                serialNumber: null,
+                name: null,
+                ipv4: null,
+            })
+            setNewGateway({ serialNumber: '', name: '', ipv4: '' });
+        }
     };
 
     return (
@@ -29,7 +51,7 @@ const GatewayForm = ({ onAddGateway }) => {
                 value={newGateway.serialNumber}
                 onChange={handleInputChange}
             />
-
+            {errors.serialNumber && <span className={styles.error}>{errors.serialNumber}</span>}
             <label htmlFor="name">Name:</label>
             <input
                 type="text"
@@ -38,7 +60,7 @@ const GatewayForm = ({ onAddGateway }) => {
                 value={newGateway.name}
                 onChange={handleInputChange}
             />
-
+            {errors.name && <span className={styles.error}>{errors.name}</span>}
             <label htmlFor="ipv4">IP Address:</label>
             <input
                 type="text"
@@ -47,7 +69,7 @@ const GatewayForm = ({ onAddGateway }) => {
                 value={newGateway.ipv4}
                 onChange={handleInputChange}
             />
-
+            {errors.ipv4 && <span className={styles.error}>{errors.ipv4}</span>}
             <button type="submit">Add Gateway</button>
         </form>
     );
