@@ -26,6 +26,7 @@ router.post('/:id_gateway', async (req, res) => {
       }
 
       if (gateway.devices.length >= 10) {
+          console.log(gateway.devices)
           return res.status(500).json({
               message: "Gateway is full"
           })

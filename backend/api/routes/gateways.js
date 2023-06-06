@@ -16,6 +16,19 @@ router.get('/', async (req, res) => {
     }
 })
 
+router.get('/:id', async (req, res) => {
+    const gateway = await Gateway.findById(req.params.id).populate('devices')
+    try {
+        if (!gateway) {
+            return res.status(404).json({ error: 'Gateway not found.' });
+        }
+        res.status(200).json(gateway);
+    }
+    catch(e){
+        res.status(500).json({ error: e.message });
+    }
+})
+
 router.post('/', async (req, res, next) => {
     const gateway = new Gateway({
         serialNumber: req.body.serialNumber,
@@ -28,7 +41,28 @@ router.post('/', async (req, res, next) => {
     }
     catch(e){
         res.status(500).json({
-            error: e
+            error: e.message
+        })
+    }
+})
+
+router.delete('/:id_gateway/', async(req, res) => {
+    const gateway = await Gateway.findById(req.params.id_gateway);
+    try {
+        if (!gateway) {
+            return res.status(404).json({
+                message: "Gateway does not exist"
+            })
+        }
+
+        await gateway.deleteOne();
+        res.status(200).json({
+            message: "Gateway removed"
+        })
+    }
+    catch(e){
+        res.status(500).json({
+            error: e.message
         })
     }
 })

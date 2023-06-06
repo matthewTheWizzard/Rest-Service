@@ -1,0 +1,13 @@
+.list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.list > li > strong {
+    display: block;
+    margin-right: auto;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    width: max-content;
+    text-decoration: underline;
+}

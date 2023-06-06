@@ -1,0 +1,12 @@
+.item {
+    display: flex;
+    flex-direction: column;
+}
+
+.item div {
+    text-align: initial;
+}
+
+.deleteBtn {
+    background-color: rgb(244, 50, 0);
+}

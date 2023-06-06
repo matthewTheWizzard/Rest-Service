@@ -1,0 +1,12 @@
+.item {
+    padding: 15px;
+    border: 1px dotted white;
+    margin: 10px;
+}
+
+.deleteBtn {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: crimson;
+    width: 100%;
+}
