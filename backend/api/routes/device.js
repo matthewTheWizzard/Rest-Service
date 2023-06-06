@@ -26,7 +26,6 @@ router.post('/:id_gateway', async (req, res) => {
       }
 
       if (gateway.devices.length >= 10) {
-          console.log(gateway.devices)
           return res.status(500).json({
               message: "Gateway is full"
           })
@@ -67,7 +66,6 @@ router.delete('/:id_gateway/:id_device', async(req, res) => {
         }
 
         const device = await Device.findById(req.params.id_device);
-        console.log(device)
 
         if (!device) {
             return res.status(404).json({
@@ -75,15 +73,16 @@ router.delete('/:id_gateway/:id_device', async(req, res) => {
             })
         }
 
+        gateway.devices.pull(req.params.id_device);
         try {
-            const result = await device.deleteOne();
-            await res.status(200).json({
-                message: "Device removed"
-            });
-        } catch (e) {
-            res.status(500).json({
+            await gateway.save();
+            await device.deleteOne();
+            res.status(200).json({ message: 'Device removed successfully.' });
+        }
+        catch(e) {
+            return res.status(500).json({
                 error: e.message
-            });
+            })
         }
     }
     catch(e){

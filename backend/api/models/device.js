@@ -17,7 +17,11 @@ const deviceSchema = mongoose.Schema({
         type: String,
         enum: ['online', 'offline'],
         required: true
-    }
+    },
+    gateway: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Gateway'
+    },
 })
 
 module.exports = mongoose.model('Device', deviceSchema);
