@@ -14,3 +14,7 @@
 .form, button {
     margin-top: 10px;
 }
+
+.error {
+    color: greenyellow;
+}

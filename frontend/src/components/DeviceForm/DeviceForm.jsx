@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styles from './DeviceForm.module.css'
+import { Validate } from "../../utils/validate.js";
 
 const DeviceForm = ({ gatewayId, onAddDevice }) => {
     const [newDevice, setNewDevice] = useState({
@@ -8,10 +9,26 @@ const DeviceForm = ({ gatewayId, onAddDevice }) => {
         status: 'online',
     });
 
+    const [errors, setErrors] = useState({
+        uid: null,
+        vendor: null,
+    });
+
     const handleAddDevice = e => {
         e.preventDefault();
-        onAddDevice(gatewayId, newDevice);
-        setNewDevice({ uid: '', vendor: '', status: 'online' });
+
+        const validate = new Validate(newDevice)
+
+        validate.ifEmpty(newDevice);
+        validate.checkUid(newDevice.uid)
+        const errors = validate.hasErrors()
+        if (errors) {
+            setErrors(validate.errors)
+        } else {
+            onAddDevice(gatewayId, newDevice);
+            setNewDevice({ uid: '', vendor: '', status: 'online' });
+            setErrors({ uid: null, vendor: null })
+        }
     };
 
     const handleDeviceChange = e => {
@@ -29,6 +46,7 @@ const DeviceForm = ({ gatewayId, onAddDevice }) => {
                 value={newDevice.uid}
                 onChange={handleDeviceChange}
             />
+            {errors.uid && <span className={styles.error}>{errors.uid}</span>}
             <br />
             <label htmlFor="vendor">Vendor:</label>
             <input
@@ -38,7 +56,7 @@ const DeviceForm = ({ gatewayId, onAddDevice }) => {
                 value={newDevice.vendor}
                 onChange={handleDeviceChange}
             />
-            <br />
+            {errors.vendor && <span className={styles.error}>{errors.vendor}</span>}
             <label htmlFor="status">Status:</label>
             <select
                 id="status"

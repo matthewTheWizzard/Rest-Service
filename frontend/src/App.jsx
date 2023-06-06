@@ -72,6 +72,12 @@ function App(){
             .then(data => {
                 const updatedGateways = gateways.map(gateway => {
                     if (gateway._id === gatewayId) {
+
+                        if (gateway.devices.length >= 10) {
+                            alert('You cannot add more than 10 devices to one Gateway')
+                            return { ...gateway, devices: gateway.devices }
+                        }
+
                         const updatedDevices = [...gateway.devices, data];
                         return { ...gateway, devices: updatedDevices };
                     }
