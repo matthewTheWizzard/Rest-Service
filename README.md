@@ -1,5 +1,5 @@
 ## Rest-Service
-GUI: https://app.netlify.com/sites/delicate-kringle-624cce/
+GUI: [https://app.netlify.com/sites/delicate-kringle-624cce/](https://delicate-kringle-624cce.netlify.app/)
 
 Description:
 
@@ -136,7 +136,7 @@ RESPONSE:
 
 API address: https://rest-service-production.up.railway.app/
 
-GUI: https://app.netlify.com/sites/delicate-kringle-624cce/
+GUI: [https://app.netlify.com/sites/delicate-kringle-624cce/](https://delicate-kringle-624cce.netlify.app/)
 
 # Development
 
