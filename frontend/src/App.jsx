@@ -2,19 +2,20 @@ import './App.css'
 import { GatewayForm, GatewayList } from './components'
 import {useEffect, useState} from "react";
 
+const BASE_LINK = 'https://rest-service-production.up.railway.app'
 
 function App(){
     const [gateways, setGateways] = useState([]);
 
     useEffect(() => {
-        fetch('http://localhost:3000/gateways')
+        fetch(BASE_LINK + '/gateways')
             .then(response => response.json())
             .then(data => setGateways(data))
             .catch(error => console.error('Error:', error));
     }, []);
 
     const addGateway = newGateway => {
-        fetch('http://localhost:3000/gateways', {
+        fetch(BASE_LINK + '/gateways', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -29,7 +30,7 @@ function App(){
     };
 
     const removeGateway = id => {
-        fetch(`http://localhost:3000/gateways/${id}`, {
+        fetch(`${BASE_LINK}/gateways/${id}`, {
             method: 'DELETE',
         })
             .then(response => response.json())
@@ -41,7 +42,7 @@ function App(){
     };
 
     const removeDevice = (gatewayId, deviceId) => {
-        fetch(`http://localhost:3000/device/${gatewayId}/${deviceId}`, {
+        fetch(`${BASE_LINK}/device/${gatewayId}/${deviceId}`, {
             method: 'DELETE',
         })
             .then(response => response.json())
@@ -61,7 +62,7 @@ function App(){
     };
 
     const addDevice = (gatewayId, newDevice) => {
-        fetch(`http://localhost:3000/device/${gatewayId}`, {
+        fetch(`${BASE_LINK}/device/${gatewayId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
